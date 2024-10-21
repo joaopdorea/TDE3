@@ -21,19 +21,19 @@ public class TripController {
     @Autowired
     private final TripRepository tripRepository;
 
-    @GetMapping("/trips")
+    @GetMapping(value = "/trips", produces = {"application/json", "application/xml"})
     public List<Trip> getAllTrips() {
         return tripRepository.findAll();
     }
 
-    @GetMapping(value = "/trip/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @GetMapping(value = "/trip/{id}, ", produces = {"application/json", "application/xml"})
     public ResponseEntity<Trip> getTripById(@PathVariable Long id) {
         return tripRepository.findById(id)
                 .map(trip -> ResponseEntity.ok(trip))
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/trip")
+    @PostMapping(value = "/trip", produces = {"application/json", "application/xml"}, consumes = {"application/json", "application/xml"})
     private ResponseEntity<String> addDriver(@RequestBody Trip trip){
         tripRepository.save(trip);
         log.info("Trip data added");
@@ -41,7 +41,7 @@ public class TripController {
     }
 
 
-    @DeleteMapping("/trip/{id}")
+    @DeleteMapping(value = "/trip/{id}", produces = {"application/json", "application/xml"})
     public ResponseEntity<Void> deleteTrip(@PathVariable Long id) {
         if (!tripRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
@@ -50,12 +50,12 @@ public class TripController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/trip/{id}")
+    @PutMapping(value = "/trip/{id}", produces = {"application/json", "application/xml"}, consumes = {"application/json", "application/xml"})
     public ResponseEntity<Trip> updateTrip(@PathVariable Long id, @RequestBody Trip tripDetails) {
         return tripRepository.findById(id)
                 .map(trip -> {
                     trip.setDestino(tripDetails.getDestino());
-                    trip.setDriver(tripDetails.getDriver()); // Se você quiser atualizar o driver também
+                    trip.setDriver(tripDetails.getDriver());
                     Trip updatedTrip = tripRepository.save(trip);
                     return ResponseEntity.ok(updatedTrip);
                 })

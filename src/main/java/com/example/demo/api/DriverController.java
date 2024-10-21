@@ -23,19 +23,19 @@ public class DriverController {
     @Autowired
     private final DriverRepository driverRepository;
 
-    @GetMapping("/drivers")
+    @GetMapping(value = "/drivers" , produces = {"application/json", "application/xml"})
     public List<Driver> getAllDrivers() {
         return driverRepository.findAll();
     }
 
-    @PostMapping("/driver")
+    @PostMapping(value = "/driver", consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
     private ResponseEntity<String> addDriver(@RequestBody Driver driver){
         driverRepository.save(driver);
         log.info("Driver data added");
         return ResponseEntity.status(HttpStatus.OK).body("ok");
     }
 
-    @GetMapping("/{id}/trips")
+    @GetMapping(value = "/{id}/trips", produces = {"application/json", "application/xml"})
     public List<Trip> getTripsByDriver(@PathVariable Long id) {
         return driverRepository.findById(id)
                 .map(Driver::getTrips)
@@ -43,14 +43,14 @@ public class DriverController {
     }
 
 
-    @GetMapping(value = "/driver/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @GetMapping(value = "/driver/{id}", produces =  {"application/json", "application/xml"})
     public ResponseEntity<Driver> getDriverById(@PathVariable Long id) {
         return driverRepository.findById(id)
                 .map(driver -> ResponseEntity.ok(driver))
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/driver/{id}")
+    @DeleteMapping(value = "/driver/{id}", produces = {"application/json", "application/xml"})
     public ResponseEntity<Void> deleteDriver(@PathVariable Long id) {
         if (!driverRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
@@ -60,7 +60,7 @@ public class DriverController {
     }
 
 
-    @PutMapping("/driver/{id}")
+    @PutMapping(value = "/driver/{id}", consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
     public ResponseEntity<Driver> updateDriver(@PathVariable Long id, @RequestBody Driver driverDetails) {
         return driverRepository.findById(id)
                 .map(driver -> {
