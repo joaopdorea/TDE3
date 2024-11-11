@@ -1,35 +1,24 @@
-# Stage 1: Build the application
-FROM openjdk:17 AS build
-LABEL authors="joaodorea"
-LABEL description="This is the Dockerfile for the Users service"
-# Set the working directory
+# Etapa 1: Build
+FROM maven:3.8.7-openjdk-17 AS build
 WORKDIR /app
 
-# Copy the Maven wrapper and pom.xml
-COPY mvnw ./
-COPY .mvn .mvn
-COPY pom.xml ./
+# Copia o arquivo pom.xml e instala as dependências
+COPY pom.xml .
+RUN mvn dependency:go-offline -B
 
-# Make the Maven wrapper executable
-RUN chmod +x mvnw
+# Copia o código-fonte do projeto e compila o projeto
+COPY src ./src
+RUN mvn clean package -DskipTests
 
-# Copy the source code
-COPY src src
-
-# Build the application
-RUN ./mvnw clean package -DskipTests
-
-# Stage 2: Run the application
-FROM openjdk:17
-
-# Set the working directory
+# Etapa 2: Execução
+FROM openjdk:17-jdk-slim
 WORKDIR /app
 
-# Copy the built jar from the build stage
-COPY --from=build /app/target/users-0.0.1-SNAPSHOT.jar users.jar
+# Copia o JAR compilado da etapa anterior
+COPY --from=build /app/target/*.jar app.jar
 
-# Expose port 8081
+# Expõe a porta padrão do Spring Boot
 EXPOSE 8081
 
-# Define the entrypoint
-ENTRYPOINT ["java", "-jar", "users.jar"]
+# Comando para rodar a aplicação
+ENTRYPOINT ["java", "-jar", "app.jar"]
