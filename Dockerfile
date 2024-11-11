@@ -13,9 +13,6 @@ COPY pom.xml ./
 # Make the Maven wrapper executable
 RUN chmod +x mvnw
 
-# Download dependencies
-RUN ./mvnw dependency:go-offline -B
-
 # Copy the source code
 COPY src src
 
@@ -31,7 +28,7 @@ WORKDIR /app
 # Copy the built jar from the build stage
 COPY --from=build /app/target/users-0.0.1-SNAPSHOT.jar users.jar
 
-# Expose port 8080
+# Expose port 8081
 EXPOSE 8081
 
 # Define the entrypoint
