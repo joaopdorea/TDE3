@@ -3,17 +3,17 @@ services:
     image: postgres:15
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: meu_db
+      POSTGRES_PASSWORD: mOsoDfikvmIRsYHqECBcBdbOVQjQPbpU
+      POSTGRES_DB: railway
     ports:
       - "5432:5432"
 
   app:
     build: .
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/meu_db
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/railway
       SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_DATASOURCE_PASSWORD: mOsoDfikvmIRsYHqECBcBdbOVQjQPbpU
     ports:
       - "8081:8081"
     depends_on:
