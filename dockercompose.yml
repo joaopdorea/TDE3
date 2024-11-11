@@ -13,7 +13,7 @@ services:
   app:
     build: .
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/meu_db
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/meu_db
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
     ports:
