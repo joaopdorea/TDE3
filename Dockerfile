@@ -1,5 +1,5 @@
 # Etapa 1: Build
-FROM maven:3.8.7-openjdk-17 AS build
+FROM maven:3.8.6-eclipse-temurin-17 AS build
 WORKDIR /app
 
 # Copia o arquivo pom.xml e instala as dependências
@@ -18,7 +18,7 @@ WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 
 # Expõe a porta padrão do Spring Boot
-EXPOSE 8081
+EXPOSE 8080
 
 # Comando para rodar a aplicação
 ENTRYPOINT ["java", "-jar", "app.jar"]
