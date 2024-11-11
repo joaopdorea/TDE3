@@ -11,7 +11,7 @@ services:
   app:
     build: .
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/railway
+      SPRING_DATASOURCE_URL: postgresql://postgres:mOsoDfikvmIRsYHqECBcBdbOVQjQPbpU@postgres.railway.internal:5432/railway
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: mOsoDfikvmIRsYHqECBcBdbOVQjQPbpU
     ports:
