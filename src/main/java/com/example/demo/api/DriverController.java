@@ -1,18 +1,15 @@
 package com.example.demo.api;
 
-import com.example.demo.Repository.DriverRepository;
+import com.example.demo.Repository.DriverDAO;
 import com.example.demo.model.Driver;
-import com.example.demo.model.Trip;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @AllArgsConstructor
@@ -21,25 +18,19 @@ public class DriverController {
 
 
     @Autowired
-    private final DriverRepository driverRepository;
+    private static final DriverDAO driverRepository = null;
 
     @GetMapping(value = "/drivers" , produces = {"application/json", "application/xml"})
     public List<Driver> getAllDrivers() {
+
+
         return driverRepository.findAll();
     }
 
     @PostMapping(value = "/driver", consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
     private ResponseEntity<String> addDriver(@RequestBody Driver driver){
         driverRepository.save(driver);
-        log.info("Driver data added");
         return ResponseEntity.status(HttpStatus.OK).body("ok");
-    }
-
-    @GetMapping(value = "/{id}/trips", produces = {"application/json", "application/xml"})
-    public List<Trip> getTripsByDriver(@PathVariable Long id) {
-        return driverRepository.findById(id)
-                .map(Driver::getTrips)
-                .orElseThrow(() -> new RuntimeException("Driver not found"));
     }
 
 
